@@ -140,3 +140,5 @@ vite.config.ts.timestamp-*
 Http-Server/package-lock.json
 ExpressJs-Starter/package-lock.json
 PROJECT-001/package-lock.json
+MidleWare/logs.txt
+MidleWare/package-lock.json
