@@ -1,25 +1,20 @@
 const express = require("express");
 const app = express();
 const port = 8000;
-const users = require("./users.json");
 const fs = require("fs");
 const { json } = require("stream/consumers");
 
 const mongoose = require("mongoose");
 const { time } = require("console");
 
-const conn = mongoose.connect('mongodb://root:example@127.0.0.1:27017/myDatabase?authSource=admin').then(() => console.log("connected with database")).
+// create a database connection
+mongoose.connect('mongodb://root:example@127.0.0.1:27017/myDatabase?authSource=admin').then(() => console.log("connected with database")).
 catch((err) => console.log(err));
 
 app.use(express.urlencoded({extended:false}));
 
+// create auser schema
 
-
-// create all API end points
-
-
-
-// get when any non browser request is made
    const myschema = new  mongoose.Schema(
      {
          firstName:{
@@ -47,9 +42,12 @@ app.use(express.urlencoded({extended:false}));
      }
    );
 
+   // create a user model     
+
    const userModel = mongoose.model("users",myschema);
 
 
+// get all users
 
 app.get("/api/users",async(req,res)=>{
 
@@ -89,7 +87,7 @@ app.post("/api/users",async(req,res) =>{
                gender: req.body.gender,
                jobTitle: req.body.jobTitle
 
-          }).then((err ,data) => {
+          }).then((data ,err) => {
 
                if(err)
                {
@@ -109,98 +107,48 @@ app.post("/api/users",async(req,res) =>{
 
 // use put method to update user
 
-app.put("/api/users/{:id}",(req,res) => {
+app.put("/api/users/{:id}",async(req,res) => {
+
+     const  updateduser = await userModel.findByIdAndUpdate(req.params.id, {
+          firstName: req.body.firstName,
+          lastName: req.body.lastName,
+          email: req.body.email,
+          gender:req.body.gender,
+          jobTitle:req.body.jobTitle
+     }, {new:true});
+
+     if(updateduser)
+     {
+          res.status(200).json({status:"success", message: "user updated successfully", data: updateduser});
+     }
+     else
+     {
+          res.status(404).json({status:"failed", message: "user not found"});
+     }    
+} 
+      
+);
+
+// use delete  method to delete user from database
+
+app.delete("/api/users/{:id}",async(req,res) => {
   
-      //read exisitng file  
-
-      fs.readFile("./users.json", "utf-8", (err,data) =>{
-              
-          if(err)
-          {
-               console.log(`error while reading the file :${err}`)
-          }
-          else
-          {
-               const users = JSON.parse(data);
-               const userIndex = users.findIndex((user) => user.id === parseInt(req.params.id));
-               if(userIndex === -1)
-               {
-                    console.log(`user with id ${req.params.id} not found`)
-               }
-               else
-               {
-                    const updatedUser = {...users[userIndex], ...req.body}
-                    console.log(updatedUser);    
-                    console.log(users[userIndex]);
-                    users[userIndex] = updatedUser;
-                    fs.writeFile("./users.json", JSON.stringify(users), (err,data) =>  {
-
-                         if(err)
-                         {
-                              console.log(`error while writing the file :${err}`);
-                         }
-                         else
-                         {
-                              return res.json({status: "sucsses", message: `user with id : ${req.params.id} updated successfully`});
-                         }
-
-                    });
-               }
-
-
-          }
-
-      })
-     
+     const deleteduser = await userModel.findByIdAndDelete(req.params.id);
+     if(deleteduser)
+     {
+          res.status(200).json({status:"success", message: "user deleted successfully"});
+     }
+     else
+     {
+          res.status(404).json({status:"failed", message: "user not found"});
+     }         
 }
 );
 
-// use delete  method to delete user from file
-
-app.delete("/api/users/{:id}",(req,res) => {
-  
-      //read exisitng file  
-
-      fs.readFile("./users.json", "utf-8", (err,data) =>{
-              
-          if(err)
-          {
-               console.log(`error while reading the file :${err}`)
-          }
-          else
-          {
-               const users = JSON.parse(data);
-               const userIndex = users.findIndex((user) => user.id === parseInt(req.params.id));
-               if(userIndex === -1)
-               {
-                    console.log(`user with id ${req.params.id} not found`)
-               }
-               else
-               {
-                    users.splice(userIndex,1);
-
-                    fs.writeFile("./users.json", JSON.stringify(users), (err,data) =>  {
-
-                         if(err)
-                         {
-                              console.log(`error while writing the file :${err}`);
-                         }
-                         else
-                         {
-                              return res.json({status: "sucsses", message: `user with id : ${req.params.id} deleted successfully`});
-                         }
-
-                    });
-               }
-
-
-          }
-
-      })
-     
-}
-);
-
+// default route
+app.get("/",(req,res) => {
+     res.send("hello from useer API  server ");
+});
 
 app.listen(port, () => {console.log(`server is startting on port: ${port} suceesfully`)}
 );
