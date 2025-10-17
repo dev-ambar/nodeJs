@@ -1,0 +1,50 @@
+in this url sortner service these are following task
+
+1: create http server to handle the request response .
+
+ 2: create Mongo db connection 
+
+ 3: crreate URL schema & model
+
+ 4: create URL routs 
+
+  5: create controller & thier handller methods
+
+
+  ****
+
+  end point of API service 
+
+  /urls/   ----> create post method in which user give the url & end response got shorturlId
+
+  /urls/shorturlId ------> get redirect the Actual url  as response
+
+  /urls/analytics   --> get analyslics of url  as response  how many times url hit and which time.
+
+
+  ********
+
+  Schema of API service ****
+
+  main Table URL have  following Schema structure 
+
+  {
+    shortUrl:{
+        type: String,
+        unique: true,
+        required:true,
+    },
+    redirectUrl:{
+        type: String,
+        required:true,
+    },
+    visitHistory:{
+        timeStamp:[type:timeStamp]
+    }
+    ,
+
+    createdAt:{
+            type:Date,
+            default:Date.now
+           }
+  }
