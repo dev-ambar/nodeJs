@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>home</title>
+    <style>
+         body {
+            font-family: tahoma, sans-serif;
+            margin: 50px;     
+            text-align: center;
+            
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to URL Shortener Service</h1>
+      <div>
+        <form action="/api/urls/" method= "POST">
+            <lable>Orignal URL: </lable>
+            <input type="text" name="originalUrl" placeholder="Enter URL here" required></input>
+            <button type="submit">Generate</button>       
+        </form>
+       </div>   
+       <% if(locals.shortUrl) { %>
+       <div>
+             <lable>Generate Shortener url : </lable><%= locals.shortUrl%> 
+       </div>
+    <% } %>
+    <% if(locals.urlDetails){ %> 
+    <div>                 
+            <table>
+                <thead>
+                <tr>
+                    <th> S No. </th>
+                    <th>originalUrl </th>
+                    <th>shortUrl</th>
+                    <th>Clicks</th>
+                </tr>
+            </thead>
+            <tbody> 
+                 <% urlDetails.forEach((item ,index ) => { %>
+                     <tr>
+                     <td><%= index +1 %></td>
+                     <td><%= item.originalUrl%></td>
+                     <td><%= item.shortUrl%></td>
+                     <td><%=item.vistHistory.length %></td>
+                     </tr>
+                <% }) %>
+               </tbody>
+            </table>
+         </div> 
+      <% } %>      
+</body>
+</html>

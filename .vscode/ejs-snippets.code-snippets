@@ -1,0 +1,48 @@
+{
+  "EJS for loop": {
+    "prefix": "ejsfor",
+    "body": [
+      "<% for (let ${1:i} = 0; ${1:i} < ${2:array}.length; ${1:i}++) { %>",
+      "  <%= ${2:array}[${1:i}] %>",
+      "<% } %>"
+    ],
+    "description": "EJS for loop"
+  },
+  "EJS if condition": {
+    "prefix": "ejsif",
+    "body": [
+      "<% if (${1:condition}) { %>",
+      "  ${2:<!-- code -->}",
+      "<% } %>"
+    ],
+    "description": "EJS if condition"
+  },
+  "EJS if-else condition": {
+    "prefix": "ejsife",
+    "body": [
+      "<% if (${1:condition}) { %>",
+      "  ${2:<!-- code -->}",
+      "<% } else { %>",
+      "  ${3:<!-- else code -->}",
+      "<% } %>"
+    ],
+    "description": "EJS if-else condition"
+  },
+  "EJS variable print": {
+    "prefix": "ejsvar",
+    "body": [
+      "<%= ${1:variable} %>"
+    ],
+    "description": "EJS variable print"
+  }, 
+   "EJS forEach loop": {
+    "prefix": "ejsforeach",
+    "body": [
+      "<% ${1:items}.forEach(${2:item} => { %>",
+      "  <%= ${2:item} %>",
+      "<% }) %>"
+    ],
+    "description": "EJS forEach loop"
+  }
+
+}
