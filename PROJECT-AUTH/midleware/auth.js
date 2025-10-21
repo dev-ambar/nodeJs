@@ -11,7 +11,7 @@ async function restictToUserWithOutLogin(req,res,next)
          if(!sessionID)
          {  
              console.log("user not login ");
-            return res.redirect("login");
+            return res.redirect("/users/login");
          }
     
         const user = getUser(sessionID);
@@ -19,13 +19,13 @@ async function restictToUserWithOutLogin(req,res,next)
             if(!user)
             {   
                 console.log("user not exist ");
-                return res.redirect("login"); 
+                return res.redirect("/users/login"); 
             }
 
              console.log("user  login ");
              req.user = user;
              next();  
 
-    };
+    }
 
     module.exports = {restictToUserWithOutLogin,}

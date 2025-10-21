@@ -9,6 +9,6 @@ const { handllerShortenUrlGenerator,handllerGeturlDetails,handleGetAnalytics} = 
 
 urlRouter.post("/", handllerShortenUrlGenerator);
 urlRouter.get("/:shortUrlId", handllerGeturlDetails);
-urlRouter.get("/analytics/:shortUrlId", handleGetAnalytics);
+urlRouter.get("/analytics/:shortUrl", handleGetAnalytics);
 
 module.exports = urlRouter;

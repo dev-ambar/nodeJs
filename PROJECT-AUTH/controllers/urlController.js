@@ -12,24 +12,27 @@ async function handllerShortenUrlGenerator(req, res) {
     }
 
     // Here you would typically generate a short URL and save it to the database
-    const shortUrl =  shortid.generate(url);
+    const shortUrl =  shortid.generate();
     console.log(`Generated short URL: ${shortUrl} for  URL: ${url}`);
 
     // Save to database
-    const entry = urlModel.create({
+    const entry = await urlModel.create({
         originalUrl: url,
         shortUrl: shortUrl,
         vistHistory: []
     }).catch((err) => {
         console.log("Error in saving to database", err);
-        return res.render('home', { error: "Internal Server Error" });  
+        return res.render('/', { error: "Internal Server Error" });  
     });        
 
     // Respond with the shortened URL
-      res.render('home', {shortUrl: shortUrl});
+     //res.render('home', {shortUrl: entry.shortUrl});
+      res.render('home', {shortUrl: `http://localhost:8001/urls/${entry.shortUrl}`});
 }
 
 async function handllerGeturlDetails(req, res) {
+       
+     console.log("erq.params",req.params);
 
      if(!req.params.shortUrlId)
      {
@@ -53,7 +56,7 @@ async function handllerGeturlDetails(req, res) {
         return res.status(500).json({ error: "Internal Server Error" });  
      });
 
-     if (!urlDetails.shortUrl) {
+     if (!urlDetails) {
         return res.status(404).json({ error: "Short URL not found" });
      }
      else
@@ -75,7 +78,7 @@ async function handleGetAlldetails(req, res) {
      });
 
      if (!urlDetails) {
-        return res.status(404).json({ error: "No data found" });
+        return res.render({ error: "No data found" });
      }
      else
      {
@@ -85,11 +88,11 @@ async function handleGetAlldetails(req, res) {
 
      async function handleGetAnalytics(req, res) {
 
-     if(!req.params.shortUrlId)
+     if(!req.params.shortUrl)
      {
         return  res.status(400).json({ error: "Short URL is required" });
      }
-     const shortUrl = req.params.shortUrlId
+     const shortUrl = req.params.shortUrl;
      console.log(`Fetching analytics for short URL: ${shortUrl}`);
      
      const urlDetails = await urlModel.findOne(

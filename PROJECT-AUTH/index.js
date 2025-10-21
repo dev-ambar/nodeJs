@@ -8,6 +8,7 @@ const staticRouter = require("./routs/staticRouter");
 const urlRouter = require("./routs/urlRouter");
 const userRouter = require("./routs/userRouter");
 const {restictToUserWithOutLogin} = require("./midleware/auth");
+const {handllerGeturlDetails} = require("./controllers/urlController");
 
 // connec to databse
 
@@ -23,21 +24,22 @@ app.set("views", path.resolve("./views"));
 // Middleware to parse form data 
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
-
-// use cookies cabpebility in user Authetication
 app.use(cookieParser());
 
 
-// create routes for url shortner service.
-app.use("/", staticRouter);
+// create public routes .
+  // landing page like login page & signup page and get  home page 
+ app.use("/", staticRouter);
+
+// create routes for user Login  & signUp
+ app.use("/users",userRouter);
 
 // whenever we trying to access url data first user should be login 
 
-app.use("/api/urls/",restictToUserWithOutLogin,urlRouter);
+app.use("/urls",restictToUserWithOutLogin,urlRouter);
 
-// create routes for user Login  & signUp
 
-app.use("/users",userRouter);
+
 
 app.listen(PORT, (err) => {
     if (err) {
