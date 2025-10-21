@@ -15,12 +15,11 @@ const userSchema = new mongoos.Schema({
     password:{
 
         type: String,
-    },
-    createdAt:{
-        type: Date,
-        default: Date.now
     }
-    });
+    },
+    {timestamps:true
+    }
+);
 
  const  users = mongoos.model("users",userSchema);
 

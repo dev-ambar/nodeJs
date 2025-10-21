@@ -1,6 +1,11 @@
 
 const users = require("../models/users.js");
 
+const {v4:uuid} = require("uuid");
+
+const {setUser,getUser} = require("../service/authService.js");
+
+
 async function handleGetSingUpPage(req,res)
 {
     return res.render("userSignUp");
@@ -35,7 +40,7 @@ async function handleUserSingUp(req,res)
         }
         else{
 
-            res.render("login");
+            res.redirect("/users/login");
         }
         
         
@@ -52,18 +57,22 @@ async function handleUserLogin(req,res)
     }
     else
     { 
-         const isUserExist =  await users.find({email,password});
+         const isUserExist =  await users.findOne({email,password});
 
-         console.log("isUserExist",isUserExist);
-
-         if(isUserExist.length >0)
+         if(!isUserExist)
          {  
 
-            res.render("home");
+            res.render("login",{err: "UserName & Password combination is invalid please try again !!"});
          }
          else
-         {
-             res.render("login",{err: "either user is and password not match or user is not register with with us please sign up"});
+         {     
+            const sessionID = uuid();
+
+            setUser(sessionID,isUserExist);
+
+            res.cookie("uuid",sessionID);
+                     
+            res.redirect("/");
          }
     }
 }

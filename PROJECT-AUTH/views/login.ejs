@@ -15,7 +15,7 @@
     </style>
 <body>
 
-       <h1>Please enter your details to login your self</h1>
+       <h1>Please enter your details to login </h1>
       <div>
         <% if (locals.err) { %>
                <h3 style="background-color: red;"> <%= err %></h3>
@@ -24,7 +24,7 @@
             <lable>EmailID:</lable>
             <input type="text" name="email" placeholder="Enter your email" required></input>
             <lable>Password:</lable>
-            <input type="text" name="password" placeholder="Enter your Password" required></input>
+            <input type="password" name="password" placeholder="Enter your Password" required ></input>
             <button type="submit">Login</button>       
         </form>
         </div>

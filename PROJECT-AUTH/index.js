@@ -1,4 +1,5 @@
 const express = require("express");
+const cookieParser =  require("cookie-parser");
 const app = express();
 const PORT = 8001;
 const path = require("path");
@@ -6,10 +7,7 @@ const {connectDb} = require("./config/dbConnection");
 const staticRouter = require("./routs/staticRouter");
 const urlRouter = require("./routs/urlRouter");
 const userRouter = require("./routs/userRouter");
-
-// Middleware to parse form data 
-app.use(express.json());
-app.use(express.urlencoded({extended:false}));
+const {restictToUserWithOutLogin} = require("./midleware/auth");
 
 // connec to databse
 
@@ -22,22 +20,24 @@ connectDb('mongodb://root:example@127.0.0.1:27017/urls?authSource=admin').then(
 app.set("view engine","ejs");
 app.set("views", path.resolve("./views"));
 
+// Middleware to parse form data 
+app.use(express.json());
+app.use(express.urlencoded({extended:false}));
 
-
+// use cookies cabpebility in user Authetication
+app.use(cookieParser());
 
 
 // create routes for url shortner service.
 app.use("/", staticRouter);
-app.use("/api/urls/", urlRouter);
+
+// whenever we trying to access url data first user should be login 
+
+app.use("/api/urls/",restictToUserWithOutLogin,urlRouter);
 
 // create routes for user Login  & signUp
 
 app.use("/users",userRouter);
-
-
-
-
-
 
 app.listen(PORT, (err) => {
     if (err) {
