@@ -7,7 +7,7 @@ const {connectDb} = require("./config/dbConnection");
 const staticRouter = require("./routs/staticRouter");
 const urlRouter = require("./routs/urlRouter");
 const userRouter = require("./routs/userRouter");
-const {restictToUserWithOutLogin} = require("./midleware/auth");
+const {restictToUserWithOutLogin,checkAuth} = require("./midleware/auth");
 const {handllerGeturlDetails} = require("./controllers/urlController");
 
 // connec to databse
@@ -29,7 +29,7 @@ app.use(cookieParser());
 
 // create public routes .
   // landing page like login page & signup page and get  home page 
- app.use("/", staticRouter);
+ app.use("/", checkAuth, staticRouter);
 
 // create routes for user Login  & signUp
  app.use("/users",userRouter);

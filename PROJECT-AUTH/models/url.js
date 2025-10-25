@@ -18,11 +18,12 @@ const urlSchema = new mongoose.Schema({
             default: Date.now
         }
     ],
-    createdAt: {
-        type: Date,
-        default: Date.now
+    createdBy:{
+     type: mongoose.Schema.Types.ObjectId,
+     ref: "users",
+
     }
-});
+},{timestamps:true});
 
 // Create URL model
 const urlModel = mongoose.model('urls', urlSchema);

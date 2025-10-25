@@ -28,4 +28,15 @@ async function restictToUserWithOutLogin(req,res,next)
 
     }
 
-    module.exports = {restictToUserWithOutLogin,}
+    async function checkAuth(req,res,next) 
+
+    {  
+         const sessionID = req.cookies?.uuid;
+    
+        const user = getUser(sessionID);
+             req.user = user;
+             next();  
+
+    }
+
+    module.exports = {restictToUserWithOutLogin,checkAuth}

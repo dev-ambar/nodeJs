@@ -4,6 +4,12 @@ const shortid = require("shortid");
 const urlModel = require("../models/url");
 
 
+async function handleGetHomePage(req,res)
+{
+    return res.render("home");
+}
+
+
 async function handllerShortenUrlGenerator(req, res) {
     // Logic for generating a shortened URL
     const url  = req.body.originalUrl;
@@ -19,10 +25,11 @@ async function handllerShortenUrlGenerator(req, res) {
     const entry = await urlModel.create({
         originalUrl: url,
         shortUrl: shortUrl,
-        vistHistory: []
+        vistHistory: [],
+        createdBy:req.user._id
     }).catch((err) => {
         console.log("Error in saving to database", err);
-        return res.render('/', { error: "Internal Server Error" });  
+        return res.render('home', { error: "Internal Server Error" });  
     });        
 
     // Respond with the shortened URL
@@ -69,22 +76,30 @@ async function handllerGeturlDetails(req, res) {
 
 
 async function handleGetAlldetails(req, res) {
-
      
-     const urlDetails = await urlModel.find({})
-    .catch((err) => {
-        console.log("Error in fetching  data from database", err);  
-        return res.status(500).json({ error: "Internal Server Error" });  
-     });
+      
+     if(req.user)
+     { 
+         const userUrlDetails = await urlModel.find({createdBy: req.user._id}).catch((err) => {
+         console.log("Error in fetching  data from database", err);  
+         return res.status(500).render('home',{ error: "Internal Server Error" });});
 
-     if (!urlDetails) {
-        return res.render({ error: "No data found" });
+      if (!userUrlDetails) {
+         return res.render('home',{ error: "No data found" });
+      }
+      else
+      {
+         res.render('home', {urlDetails: userUrlDetails});
+      }
      }
      else
      {
-        res.render('home', {urlDetails: urlDetails});
+        res.redirect("/users/login");
      }
+       
    }
+
+
 
      async function handleGetAnalytics(req, res) {
 
@@ -114,4 +129,4 @@ async function handleGetAlldetails(req, res) {
 
 }
 
-module.exports = { handllerShortenUrlGenerator,handllerGeturlDetails,handleGetAnalytics,handleGetAlldetails};
+module.exports = { handllerShortenUrlGenerator,handllerGeturlDetails,handleGetAnalytics,handleGetAlldetails,handleGetHomePage};
