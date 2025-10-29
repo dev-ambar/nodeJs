@@ -150,3 +150,5 @@ PROJECT-EJS/package-lock.json
 PROJECT-AUTH/package-lock.json
 PROJECT-JWT-AUTH/package-lock.json
 PROJECT-JWT-AUTH/.vscode/settings.json
+PROJECT-AUTHERIZATION/.vscode/settings.json
+PROJECT-AUTHERIZATION/package-lock.json

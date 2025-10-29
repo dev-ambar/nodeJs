@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Login Page</title>
+</head>
+<style>
+         body {
+            font-family: tahoma, sans-serif;
+            margin: 50px;     
+            text-align: center;
+            
+        }
+    </style>
+<body>
+
+       <h1>Please enter your details to login </h1>
+      <div>
+        <% if (locals.err) { %>
+               <h3 style="background-color: red;"> <%= err %></h3>
+        <% } %>
+        <form action="/users/login"  method= "POST">
+            <lable>EmailID:</lable>
+            <input type="text" name="email" placeholder="Enter your email" required></input>
+            <lable>Password:</lable>
+            <input type="password" name="password" placeholder="Enter your Password" required ></input>
+            <button type="submit">Login</button>       
+        </form>
+        </div>
+    
+</body>
+</html>
