@@ -67,7 +67,11 @@ async function handleUserLogin(req,res)
          else
          {     
             const jwtToken =  setUser(isUserExist);
-            res.status(200).json({"token":jwtToken});
+            
+            res.cookie("uuid",jwtToken);
+                     
+            res.render("home",{userName:isUserExist.name})
+            
          }
     }
 }

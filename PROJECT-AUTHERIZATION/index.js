@@ -7,8 +7,7 @@ const {connectDb} = require("./config/dbConnection");
 const staticRouter = require("./routs/staticRouter");
 const urlRouter = require("./routs/urlRouter");
 const userRouter = require("./routs/userRouter");
-const {restictToUserWithOutLogin,checkAuth} = require("./midleware/auth");
-const {handllerGeturlDetails} = require("./controllers/urlController");
+const {handleUserAuthentication,restricTo} = require("./midleware/auth");
 
 // connec to databse
 
@@ -25,18 +24,19 @@ app.set("views", path.resolve("./views"));
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
 app.use(cookieParser());
+app.use(handleUserAuthentication);
 
 
 // create public routes .
   // landing page like login page & signup page and get  home page 
- app.use("/", checkAuth, staticRouter);
+ app.use("/", staticRouter);
 
 // create routes for user Login  & signUp
  app.use("/users",userRouter);
 
 // whenever we trying to access url data first user should be login 
 
-app.use("/urls",restictToUserWithOutLogin,urlRouter);
+app.use("/urls",restricTo(["NORMAL"]),urlRouter);
 
 
 

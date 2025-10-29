@@ -34,7 +34,8 @@ async function handllerShortenUrlGenerator(req, res) {
 
     // Respond with the shortened URL
      //res.render('home', {shortUrl: entry.shortUrl});
-      res.render('home', {shortUrl: `http://localhost:8001/urls/${entry.shortUrl}`});
+      res.render('home', {shortUrl: `http://localhost:8001/urls/${entry.shortUrl}`,
+      userName:req.user.name});
 }
 
 async function handllerGeturlDetails(req, res) {

@@ -11,6 +11,7 @@ function  setUser(user)
           _id: user._id,
           name:user.name,
           email: user.email,
+          role:user.role,
      };
 
      return  jsonwebtoken.sign(userpayload,jwtScreat);
@@ -21,14 +22,13 @@ function getUser(token)
    if(!token)
      return null;
    try {
-    console.log("getUSer Token ",token);
+
      const user = jsonwebtoken.verify(token,jwtScreat);
-     console.log("user",user);
+
      return user;
    }
    catch(error)
    {
-     console.log("error",error);
      return null;
    }
    

@@ -1,47 +1,40 @@
 
 const {getUser} = require("../service/authService");
 
- async function restictToUserWithOutLogin(req,res,next)
- {  
+ 
+ function  handleUserAuthentication(req,res,next)
+ { 
+   req.user = null;
+     
+  const userToken  = req.cookies?.uuid;
+   
+  if(!userToken)
+    return next();
 
-    const authToken = req.headers["authorization"];
-    
-    if(!authToken);
-    {
-        return res.redirect("/users/login"); 
-    }
+  const user = getUser(userToken);
+  if(!user)
+    return next();
 
-    const token = authToken?.split("Bearer")[1];
+  req.user = user;
 
-    if(!token)
-    {
-      return res.redirect("/users/login");
-    }
-    
-    const user = getUser(token.trim());
-
-    if(!user)
-    {
-      return res.redirect("/users/login");
-    }
-
-    next.user = user ;
-
-    next();
+    return next();
 
  }
+    
+ function restricTo( roles = [])
+ {
+     return function(req,res,next)
+     {
+          if(!req.user)
+            return res.redirect("/users/login");
+          if(!roles.includes(req.user.role))
+            return  res.render("login",{err: `${req.user} is not Authorized to access`});
 
-    async function checkAuth(req,res,next) 
-    {    
-      const authToken = req.headers["authorization"];
+          return next();
 
-      const token  = authToken?.split("Bearer")[1];
+     };
+ }
+    
 
-        const user = getUser(token.trim());
-             
-        req.user = user;
-             next();  
 
-    }
-
-    module.exports = {checkAuth,restictToUserWithOutLogin}
+    module.exports = {restricTo,handleUserAuthentication}
