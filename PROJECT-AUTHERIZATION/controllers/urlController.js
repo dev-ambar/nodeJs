@@ -80,10 +80,20 @@ async function handleGetAlldetails(req, res) {
      
       
      if(req.user)
-     { 
-         const userUrlDetails = await urlModel.find({createdBy: req.user._id}).catch((err) => {
-         console.log("Error in fetching  data from database", err);  
-         return res.status(500).render('home',{ error: "Internal Server Error" });});
+     {    
+         let userUrlDetails = null; 
+         if(req.user.role ==='NORMAL')
+         {
+             userUrlDetails = await urlModel.find({createdBy: req.user._id}).catch((err) => {
+             console.log("Error in fetching  data from database", err);  
+            return res.status(500).render('home',{ error: "Internal Server Error" });});
+         }
+          if(req.user.role === 'ADMIN')
+         {
+             userUrlDetails = await urlModel.find({}).catch((err) => {
+             console.log("Error in fetching  data from database", err);  
+            return res.status(500).render('home',{ error: "Internal Server Error" });});
+         }       
 
       if (!userUrlDetails) {
          return res.render('home',{ error: "No data found" });

@@ -29,6 +29,7 @@ const {getUser} = require("../service/authService");
             return res.redirect("/users/login");
           if(!roles.includes(req.user.role))
             return  res.render("login",{err: `${req.user} is not Authorized to access`});
+          
 
           return next();
 
