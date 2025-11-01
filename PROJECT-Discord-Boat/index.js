@@ -28,4 +28,4 @@ client.on("interactionCreate",(interaction) => {
 });
 
 
-client.login("MTQzMzUxMTEwNDM1NjgxMDgxMg.G-wNM6.1fgK4U_uY4yDGfQ_qzhjBzXxKPZU0H5H32KTSw");
+client.login("TOKEN");
