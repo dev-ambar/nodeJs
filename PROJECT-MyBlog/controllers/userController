@@ -1,0 +1,43 @@
+
+const users = require("../models/user");
+
+async function handlerUserSignUp(req,res)
+{   
+     const {fullName,email,password} = req.body;
+
+     if(!email || !password || !fullName)
+     {
+        return res.render("signup",{error:"All fields are mendatory"});
+     }
+    
+     const newUser = await users.create({fullName,email,password}).catch((err) => {
+        return res.render("signup",{error:"something went wrong please try again later"});
+     });
+
+    if(!newUser)
+        return res.render("signup",{error:"something went wrong please try again later"});
+
+    return res.redirect("/signin");
+}
+
+async function handlerUserSignIn(req, res) {   
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.render("signin", { error: "All fields are mandatory" });
+    }
+
+    const user = await users.isPasswordValid(email, password);
+
+    // If valid, redirect to homepage
+    return res.redirect("/");
+
+  } catch (err) {
+    return res.render("signin", { error: err.message });
+  }
+}
+
+
+
+module.exports = {handlerUserSignUp,handlerUserSignIn}
