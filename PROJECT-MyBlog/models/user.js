@@ -64,10 +64,12 @@ userSchema.static("isPasswordValid", async function(email,password) {
          throw new Error("Password not found");  
     }
        
-     else
-     {    
-         return { ...user, password: undefined,salt:undefined}; 
-     }
+  // Convert  MONGO USER DOCUMENT to plain object, then remove sensitive fields
+     const userObj = user.toObject();
+    delete userObj.password;
+    delete userObj.salt;
+
+  return userObj;
        
 });
 

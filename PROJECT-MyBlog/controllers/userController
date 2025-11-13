@@ -1,5 +1,6 @@
 
 const users = require("../models/user");
+const { generateToken ,validateToken} = require("../services/authetication");
 
 async function handlerUserSignUp(req,res)
 {   
@@ -21,16 +22,21 @@ async function handlerUserSignUp(req,res)
 }
 
 async function handlerUserSignIn(req, res) {   
-  try {
+  
     const { email, password } = req.body;
-
     if (!email || !password) {
       return res.render("signin", { error: "All fields are mandatory" });
     }
-
+try {
     const user = await users.isPasswordValid(email, password);
+    
+    // Generate JWT token
+    const token = generateToken(user);
 
-    // If valid, redirect to homepage
+    // If valid, redirect to homepage with token in cookie
+    
+    res.cookie("auth_token",token);
+    
     return res.redirect("/");
 
   } catch (err) {
@@ -38,6 +44,19 @@ async function handlerUserSignIn(req, res) {
   }
 }
 
+async function handlerUserLogout(req, res) {   
+  
+try {
+      
+    res.clearCookie("auth_token").redirect("/")
+    
+  } catch (err) {
+    console.error("Error during logout:", err); // Debugging line
+    return res.redirect("/");
+  }
+}
 
 
-module.exports = {handlerUserSignUp,handlerUserSignIn}
+
+
+module.exports = {handlerUserSignUp,handlerUserSignIn,handlerUserLogout};

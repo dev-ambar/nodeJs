@@ -4,12 +4,19 @@ const path = require("path");
 const staticRounter = require("./routs/staticRouter");
 const userRouter = require("./routs/userRouter");
 const connectToDB = require("./config/DbConection");
+const {checkCookiesAndAuthentication} = require("./midleware/authentication");
+const cookieParser = require("cookie-parser");  
+const blogRouter = require("./routs/blogRouter");
 
 const PORT = 8000;
 
 const app = express();
 
+// middlewares
+
 app.use(express.urlencoded({extended:false}));
+app.use(cookieParser());
+app.use(checkCookiesAndAuthentication("auth_token"));
 
 // connec to databse
 
@@ -30,6 +37,7 @@ app.set("views", path.resolve("./views"));
 // register routers
 app.use("/",staticRounter);
 app.use("/users",userRouter);
+app.use("/blogs", blogRouter)
 
 
 app.listen(PORT,() => {

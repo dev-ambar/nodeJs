@@ -3,17 +3,11 @@
   <head>
     <%- include('./partials/head')%>
     </head>
-    <title>Blogify</title>
+    <title>Signin</title>
   <body>
     <%- include('./partials/navBar')%>
     <%- include('./partials/scripts') %>
     <div class="container mt-4"> 
-         <% if(locals.error) { %>
-            <h3><%= locals.error %></h3>   
-      <% } %> 
-      <% if (locals.userName) { %>
-           <h3>Welcome, <%= locals.userName %>!</h3>
-      <% } %>
         <form action="/users/signin" method="POST">
         <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Email address</label>
