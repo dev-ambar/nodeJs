@@ -1,7 +1,5 @@
 const {Schema,model}  = require('mongoose');
-const {
-  createHmac,randomBytes
-} = require('node:crypto');
+const {createHmac,randomBytes} = require('node:crypto');
 
 const userSchema = Schema({
     fullName:{
