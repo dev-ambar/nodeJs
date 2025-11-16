@@ -16,7 +16,7 @@
        </div>
       </div>
       <div class="container mt-3">
-          <img src="<%= blog.authorId.profileImagePath%>" width="100px"><%=blog.authorId.fullName %> </img>
+          <img src="<%= blog.authorId.profileImagePath%>" width="50px"><%=blog.authorId.fullName %> </img>
           <pre class="card-text"><small class="text-muted">Posted on <%= blog.createdAt%></small></pre>
       </div>
       <div class="container mt-3">
@@ -37,7 +37,7 @@
         <% if (locals.comments && locals.comments.length > 0) { %>
             <% locals.comments.forEach(function(comment) { %>
                 <img src="<%= comment.authorId.profileImagePath%>" width="50px"></img>
-                <pre class="card-text"><small class="text-muted">By <%= comment.authorId.fullName %> on <%= comment.createdAt%></small></pre>            
+                <small class="text-muted">By <%= comment.authorId.fullName %> on <%= comment.createdAt%></small>           
                 <pre class="card-text"><%= comment.content %></pre>
                 
             <% }); %>
