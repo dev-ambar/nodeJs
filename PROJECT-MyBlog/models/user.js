@@ -21,7 +21,7 @@ const userSchema = Schema({
     profileImagePath:{
 
         type: String,
-        default:"./public/images/defaultProfile.png",
+        default:"/images/user-defaultProfile.png",
     },
     role:{
         type: String,
@@ -30,7 +30,7 @@ const userSchema = Schema({
     }  
 
 },
-{timeStamps: true});
+{timestamps: true});
 
 // create pre save hook to hash password
 
