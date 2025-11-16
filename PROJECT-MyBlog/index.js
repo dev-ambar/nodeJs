@@ -7,6 +7,7 @@ const connectToDB = require("./config/DbConection");
 const {checkCookiesAndAuthentication} = require("./midleware/authentication");
 const cookieParser = require("cookie-parser");  
 const blogRouter = require("./routs/blogRouter");
+const commentRouter = require("./routs/commentRouter");
 
 const PORT = 8000;
 
@@ -17,6 +18,7 @@ const app = express();
 app.use(express.urlencoded({extended:false}));
 app.use(cookieParser());
 app.use(checkCookiesAndAuthentication("auth_token"));
+app.use(express.static(path.resolve('./public')));
 
 // connec to databse
 
@@ -37,7 +39,8 @@ app.set("views", path.resolve("./views"));
 // register routers
 app.use("/",staticRounter);
 app.use("/users",userRouter);
-app.use("/blogs", blogRouter)
+app.use("/blogs", blogRouter);
+app.use("/comments", commentRouter);
 
 
 app.listen(PORT,() => {

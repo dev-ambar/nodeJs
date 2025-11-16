@@ -4,7 +4,7 @@ const blogRouter = express.Router();
 const multer = require('multer');
 const path = require('path'); 
 
-const {handlerAddNewBlog} = require("../controllers/blogController");
+const {handlerAddNewBlog,handlerViewBlog} = require("../controllers/blogController");
 
  
 
@@ -22,5 +22,6 @@ const upload = multer({storage: storage})
 
 
 blogRouter.post("/addNewBlog",upload.single("coverImage"),handlerAddNewBlog);
+blogRouter.get("/:blogId",handlerViewBlog);
 
 module.exports = blogRouter;

@@ -19,7 +19,7 @@ const blogSchema = Schema({
         required:true,
     },
 },
-{timeStamps: true               
+{timestamps: true               
 });
 
 const blogs = model("blogs",blogSchema);

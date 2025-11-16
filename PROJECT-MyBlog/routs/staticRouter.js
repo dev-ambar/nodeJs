@@ -2,9 +2,17 @@ const express = require("express");
 
 const staticRounter = express.Router();
 
+const blogs = require("../models/blog");
+
 
 staticRounter.get("/", (req,res) => {
-    res.render("home",{user: req.user});
+
+    const allBlogs = blogs.find().populate("authorId").sort({createdAt: -1}).then((blogs) => {
+        res.render("home",{user: req.user, blogs: blogs});
+    }).catch((err) => {
+        console.error("Error fetching blogs:", err);
+        res.render("home",{user: req.user, blogs: []});
+    });
 });
 
 staticRounter.get("/addNewBlog", (req,res) => {

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <%- include('./partials/head')%>
+    </head>
+    <title>viewBlog</title>
+  <body>
+    <%- include('./partials/navBar')%>
+    <div class="container mt-5">
+      <div class="card">
+        <img src="<%= blog.coverImagePath %>" class="card-img-top" alt="Blog Cover Image" width="700px" height="700px"></img>
+        <div class="card-body">
+          <h5 class="card-title"><%= blog.title %></h5>
+          <pre class="card-text"><%= blog.content %></pre>
+        </div>
+       </div>
+      </div>
+      <div class="container mt-3">
+          <img src="<%= blog.authorId.profileImagePath%>" width="100px"><%=blog.authorId.fullName %> </img>
+          <pre class="card-text"><small class="text-muted">Posted on <%= blog.createdAt%></small></pre>
+      </div>
+      <div class="container mt-3">
+        
+         <h1>Comments (<%= locals.comments.length%>)</h1>
+         <% if (locals.user) { %>
+            <form action="/comments/<%=blog._id%>" method="POST">
+              <div class="mb-3">
+               <textarea class="form-control" id="content" name="content" rows="5" placeholder="Enter the comment"></textarea>
+             </div> 
+             <button type="submit" class="btn btn-primary">POST</button>           
+        </form>
+         <% } %>  
+      </div>
+      <div class="container mt-3">
+            <div class="card mb-3">
+                <div class="card-body">
+        <% if (locals.comments && locals.comments.length > 0) { %>
+            <% locals.comments.forEach(function(comment) { %>
+                <img src="<%= comment.authorId.profileImagePath%>" width="50px"></img>
+                <pre class="card-text"><small class="text-muted">By <%= comment.authorId.fullName %> on <%= comment.createdAt%></small></pre>            
+                <pre class="card-text"><%= comment.content %></pre>
+                
+            <% }); %>
+        <% } else { %>
+            <pre>No comments yet. Be the first to comment!</pre>
+        <% } %> 
+          </div>
+        </div>
+    </div>
+    <%- include('./partials/scripts') %>
+       
+  </body>
+</html>
+
+
+
