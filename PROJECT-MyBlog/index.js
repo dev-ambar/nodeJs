@@ -1,3 +1,4 @@
+const dotenv = require("dotenv");
 const express = require("express");
 const path = require("path");
 
@@ -9,7 +10,10 @@ const cookieParser = require("cookie-parser");
 const blogRouter = require("./routs/blogRouter");
 const commentRouter = require("./routs/commentRouter");
 
-const PORT = 8000;
+dotenv.config();
+
+const PORT = process.env.PORT || 8000;
+
 
 const app = express();
 
@@ -22,7 +26,7 @@ app.use(express.static(path.resolve('./public')));
 
 // connec to databse
 
-connectToDB('mongodb://root:example@127.0.0.1:27017/blogify?authSource=admin').then(
+connectToDB(process.env.dbUrl).then(
     () => console.log("Connected to the database")  
 ).catch((err) => console.log(err));
 
