@@ -12,7 +12,7 @@ const commentRouter = require("./routs/commentRouter");
 
 dotenv.config();
 
-const PORT = process.env.PORT || 8000;
+const PORT = process.env.PORT || 3000;
 
 
 const app = express();
@@ -25,8 +25,10 @@ app.use(checkCookiesAndAuthentication("auth_token"));
 app.use(express.static(path.resolve('./public')));
 
 // connec to databse
+// process.env.dbUrl  used to connect local mongo database running on my container
+// process.env.DBUrl used to connect to cloud mongo database
 
-connectToDB(process.env.dbUrl).then(
+connectToDB(process.env.dbUrl||process.env.DBUrl).then(
     () => console.log("Connected to the database")  
 ).catch((err) => console.log(err));
 
